@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
         >
           Learn More About Us
         </Link>
+        <Button>Shad-cn button</Button>
       </div>
     </div>
   );
