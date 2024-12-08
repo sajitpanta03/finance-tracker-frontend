@@ -5,7 +5,7 @@ export default function InputComponent({
   type,
   className,
   children,
-  func,
+  onChange,
   ...props
 }) {
   return (
@@ -15,7 +15,7 @@ export default function InputComponent({
         type={type}
         className={className}
         {...props}
-        onChange={(e) => func({ [e.target.name]: e.target.value })}
+        onChange={(e) => onChange({ [e.target.name]: e.target.value })}
       />
     </>
   );

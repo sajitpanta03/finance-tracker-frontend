@@ -49,7 +49,7 @@ export default function Registration() {
                   labelName="Email address"
                   name="email"
                   placeholder="Enter your email"
-                  func={handleOnChange}
+                  onChange={handleOnChange}
                 />
               </div>
               <div className="input mb-[33px]">
@@ -58,7 +58,7 @@ export default function Registration() {
                   labelName="Password"
                   name="password"
                   placeholder="Enter your password"
-                  func={handleOnChange}
+                  onChange={handleOnChange}
                 >
                   <div className="flex justify-between">
                     <label>Password</label>
