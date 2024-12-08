@@ -2,31 +2,24 @@ import InputComponent from "@/components/InputComponent";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaApple } from "react-icons/fa";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import useApi from "@/hooks/useApi";
 
-export default function Registration() {
+export default function Login() {
+  const { data, error, loading, createData } = useApi("http://127.0.0.1:8000");
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleFormData = useCallback(async () => {
+  const handleFormData = async () => {
     try {
-      const response = await fetch("https://api/url", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.log("There was a problem with the fetch", error);
+      await createData("/api/v1/login", formData);
+    } catch (err) {
+      console.log("There was a problem with the login: ", err.message);
     }
-  }, [formData]);
+  };
 
   const handleOnChange = (data) => {
     setFormData((prev) => ({

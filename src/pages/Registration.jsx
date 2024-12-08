@@ -2,32 +2,26 @@ import InputComponent from "@/components/InputComponent";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { FaGoogle, FaApple } from "react-icons/fa";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import useApi from "@/hooks/useApi";
 
 export default function Registration() {
+  const { data, error, loading, createData } = useApi("http://127.0.0.1:8000");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    remember: true,
   });
 
-  const handleFormData = useCallback(async () => {
+  const handleFormData = async () => {
     try {
-      const response = await fetch("https://api/url", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.log("There was a problem with the fetch", error);
+      await createData("/api/v1/register", formData);
+    } catch (err) {
+      console.error("There was a problem with the registration:", err.message);
     }
-  }, [formData]);
+  };
 
   const handleOnChange = (data) => {
     setFormData((prev) => ({
@@ -35,10 +29,6 @@ export default function Registration() {
       ...data,
     }));
   };
-
-  // useEffect(() => {
-  //   if (formData.name) console.log(formData);
-  // }, [formData]);
 
   return (
     <div className="main-wrapper flex flex-row w-full h-[100vh]">
@@ -117,7 +107,7 @@ export default function Registration() {
         </div>
       </div>
       <div className="imageContainer  md:w-[50%] md:block hidden">
-        <div className="imagebox w-full h-[100vh] bg-pink-500 rounded-tl-[40px] rounded-bl-[40px] rounded-tr-[0px] rounded-br-[0px]">
+        <div className="imagebox w-full h-[100vh] rounded-tl-[40px] rounded-bl-[40px] rounded-tr-[0px] rounded-br-[0px]">
           <img
             className="relative w-full h-full top-0 left-0 rounded-tl-[40px] rounded-bl-[40px] rounded-tr-[0px] rounded-br-[0px] object-cover"
             src="https://images.pexels.com/photos/7887815/pexels-photo-7887815.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
