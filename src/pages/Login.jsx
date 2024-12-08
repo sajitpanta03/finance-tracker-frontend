@@ -12,10 +12,11 @@ export default function Registration() {
 
 	const handleFormData = useCallback(async () => {
 		try {
-			const response = await fetch('http://127.0.0.1:8000/api/v1/login', {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					'accept': 'application/json',
 				},
 				body: JSON.stringify(formData),
 			})
