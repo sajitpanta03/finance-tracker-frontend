@@ -98,13 +98,12 @@ export default function ForgotPassword() {
               <button
                 type="submit"
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
-                disabled={loading} // Disable button while loading
+                disabled={loading}
               >
-                {loading ? "Loading..." : "Submit"} {/* Show loading text */}
+                {loading ? "Loading..." : "Submit"}
               </button>
             </form>
 
-            {/* Loader */}
             {loading && (
               <div className="mt-4 text-center text-blue-500">Loading...</div>
             )}
