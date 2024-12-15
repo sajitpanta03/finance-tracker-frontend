@@ -56,7 +56,7 @@ export default function Login() {
                   <div className="flex justify-between">
                     <label>Password</label>
                     <span>
-                      <Link className="text-blue-800 text-sm" to="#">
+                      <Link className="text-blue-800 text-sm" to="/forgot-password">
                         forgot password
                       </Link>
                     </span>
