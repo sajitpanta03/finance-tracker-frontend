@@ -1,4 +1,4 @@
-import { Input } from "./ui/input";
+import { Input } from './ui/input'
 
 export default function InputComponent({
   labelName,
@@ -18,5 +18,5 @@ export default function InputComponent({
         onChange={(e) => onChange({ [e.target.name]: e.target.value })}
       />
     </>
-  );
+  )
 }

@@ -1,32 +1,32 @@
-import InputComponent from "@/components/InputComponent";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { FaGoogle, FaApple } from "react-icons/fa";
-import { useState } from "react";
-import useApi from "@/hooks/useApi";
+import InputComponent from '@/components/InputComponent'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { FaGoogle, FaApple } from 'react-icons/fa'
+import { useState } from 'react'
+import useApi from '@/hooks/useApi'
 
 export default function Login() {
-  const { data, error, loading, createData } = useApi("http://127.0.0.1:8000");
+  const { data, error, loading, createData } = useApi('http://127.0.0.1:8000')
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+    email: '',
+    password: '',
+  })
 
   const handleFormData = async () => {
     try {
-      await createData("/api/v1/login", formData);
+      await createData('/api/v1/login', formData)
     } catch (err) {
-      console.log("There was a problem with the login: ", err.message);
+      console.log('There was a problem with the login: ', err.message)
     }
-  };
+  }
 
   const handleOnChange = (data) => {
     setFormData((prev) => ({
       ...prev,
       ...data,
-    }));
-  };
+    }))
+  }
 
   return (
     <div className="main-wrapper flex flex-row w-full h-[100vh]">
@@ -56,7 +56,10 @@ export default function Login() {
                   <div className="flex justify-between">
                     <label>Password</label>
                     <span>
-                      <Link className="text-blue-800 text-sm" to="/forgot-password">
+                      <Link
+                        className="text-blue-800 text-sm"
+                        to="/forgot-password"
+                      >
                         forgot password
                       </Link>
                     </span>
@@ -110,5 +113,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,34 +1,34 @@
-import InputComponent from "@/components/InputComponent";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { FaGoogle, FaApple } from "react-icons/fa";
-import { useState } from "react";
-import useApi from "@/hooks/useApi";
+import InputComponent from '@/components/InputComponent'
+import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
+import { FaGoogle, FaApple } from 'react-icons/fa'
+import { useState } from 'react'
+import useApi from '@/hooks/useApi'
 
 export default function Registration() {
-  const { data, error, loading, createData } = useApi("http://127.0.0.1:8000");
+  const { data, error, loading, createData } = useApi('http://127.0.0.1:8000')
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
     remember: true,
-  });
+  })
 
   const handleFormData = async () => {
     try {
-      await createData("/api/v1/register", formData);
+      await createData('/api/v1/register', formData)
     } catch (err) {
-      console.error("There was a problem with the registration:", err.message);
+      console.error('There was a problem with the registration:', err.message)
     }
-  };
+  }
 
   const handleOnChange = (data) => {
     setFormData((prev) => ({
       ...prev,
       ...data,
-    }));
-  };
+    }))
+  }
 
   return (
     <div className="main-wrapper flex flex-row w-full h-[100vh]">
@@ -116,5 +116,5 @@ export default function Registration() {
         </div>
       </div>
     </div>
-  );
+  )
 }
