@@ -20,15 +20,11 @@ const useApi = (baseURL) => {
           body: body ? JSON.stringify(body) : null,
         })
 
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`)
-        }
-
         const responseData = await response.json()
         setData(responseData)
         return responseData
       } catch (err) {
-        setError(err.message)
+        setError(err.errors)
         throw err
       } finally {
         setLoading(false)
