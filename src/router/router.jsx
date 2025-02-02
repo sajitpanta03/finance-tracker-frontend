@@ -4,6 +4,9 @@ import Registration from '@/pages/Registration'
 import PasswordReset from '@/pages/PaswordReset'
 import Login from '@/pages/Login'
 import ForgotPassword from '@/pages/ForgotPassword'
+import UserDashboard from '@/pages/UserDashboard'
+import ProtectedRoute from '@/hooks/ProtectedRoute.js'
+import ViewIncomePage from '@/pages/incomes/ViewIncomePage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -24,8 +27,24 @@ const router = createBrowserRouter([
       },
       {
         path: 'password-reset',
-        element: <PasswordReset />
-      }
+        element: <PasswordReset />,
+      },
+      {
+        path: 'user-dashboard',
+        element: (
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'view-income',
+        element: (
+          <ProtectedRoute>
+            <ViewIncomePage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ])

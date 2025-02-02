@@ -1,31 +1,68 @@
-import InputComponent from '@/components/InputComponent'
+import { useReducer } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
+import InputComponent from '@/components/InputComponent'
 import { FaGoogle, FaApple } from 'react-icons/fa'
-import { useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import useApi from '@/hooks/useApi'
 
-export default function Login() {
-  const { data, error, loading, createData } = useApi('http://127.0.0.1:8000')
+const initialState = {
+  email: '',
+  password: '',
+  token: null,
+  loading: false,
+  error: null,
+}
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return { ...state, [action.field]: action.value }
+    case 'LOGIN_REQUEST':
+      return { ...state, loading: true, error: null }
+    case 'LOGIN_SUCCESS':
+      return { ...state, loading: false, token: action.token }
+    case 'LOGIN_FAILURE':
+      return { ...state, loading: false, error: action.error }
+    default:
+      return state
+  }
+}
+
+export default function Login() {
+  const { createData } = useApi('http://127.0.0.1:8000')
+  const navigate = useNavigate()
+
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const handleFormData = async () => {
+    dispatch({ type: 'LOGIN_REQUEST' }) // Start the login request
+
     try {
-      await createData('/api/v1/login', formData)
+      const response = await createData('/api/v1/login', {
+        email: state.email,
+        password: state.password,
+      })
+
+      if (response && response.data.token) {
+        dispatch({ type: 'LOGIN_SUCCESS', token: response.data.token })
+        localStorage.setItem('authToken', response.data.token)
+        navigate('/user-dashboard')
+      } else {
+        const errorMessage = response.message || 'Login failed'
+        dispatch({ type: 'LOGIN_FAILURE', error: errorMessage })
+        toast.error(errorMessage, { position: 'top-center', autoClose: 3000 })
+      }
     } catch (err) {
-      console.log('There was a problem with the login: ', err.message)
+      const errorMessage = 'Login failed, please try again.'
+      dispatch({ type: 'LOGIN_FAILURE', error: errorMessage })
+      toast.error(errorMessage, { position: 'top-center', autoClose: 3000 })
     }
   }
 
-  const handleOnChange = (data) => {
-    setFormData((prev) => ({
-      ...prev,
-      ...data,
-    }))
+  const handleOnChange = (field, value) => {
+    dispatch({ type: 'SET_FIELD', field, value })
   }
 
   return (
@@ -42,7 +79,8 @@ export default function Login() {
                   labelName="Email address"
                   name="email"
                   placeholder="Enter your email"
-                  onChange={handleOnChange}
+                  onChange={(e) => handleOnChange('email', e.target.value)}
+                  required
                 />
               </div>
               <div className="input mb-[33px]">
@@ -51,7 +89,8 @@ export default function Login() {
                   labelName="Password"
                   name="password"
                   placeholder="Enter your password"
-                  onChange={handleOnChange}
+                  onChange={(e) => handleOnChange('password', e.target.value)}
+                  required
                 >
                   <div className="flex justify-between">
                     <label>Password</label>
@@ -60,7 +99,7 @@ export default function Login() {
                         className="text-blue-800 text-sm"
                         to="/forgot-password"
                       >
-                        forgot password
+                        Forgot password?
                       </Link>
                     </span>
                   </div>
@@ -68,11 +107,12 @@ export default function Login() {
               </div>
               <div className="button mb-12">
                 <Button
-                  className="w-full bg-slate-300"
+                  className="w-full"
                   variant="outline"
-                  onClick={() => handleFormData()}
+                  onClick={handleFormData}
+                  disabled={state.loading}
                 >
-                  Login
+                  {state.loading ? 'Logging in...' : 'Login'}
                 </Button>
               </div>
               <div className="flex items-center w-full max-w-md mb-4">
@@ -83,18 +123,18 @@ export default function Login() {
               <div className="thirdPartySignup-Wrapper md:flex md:justify-between mb-4">
                 <div className="link-wrapper flex border-[2px] border-gray-500 rounded pl-3 pr-3 pt-1 pb-1 mb-4 lg:mb-0">
                   <FaGoogle className="mr-2 mt-1" />
-                  <Link className="">Sign in with Google</Link>
+                  <Link to="/google-signin">Sign in with Google</Link>
                 </div>
 
                 <div className="link-wrapper flex border-[2px] border-gray-500 rounded pl-3 pr-3 pt-1 pb-1 mb-4 lg:mb-0">
                   <FaApple className="mr-2 mt-1" />
-                  <Link className=" ">Sign in with Apple</Link>
+                  <Link to="/apple-signin">Sign in with Apple</Link>
                 </div>
               </div>
               <div className="signInLink-wrapper flex justify-center">
                 <span>
                   Don't have an account?
-                  <Link to="/" className="ml-1 text-blue-800">
+                  <Link to="/signup" className="ml-1 text-blue-800">
                     Sign up
                   </Link>
                 </span>
@@ -103,15 +143,16 @@ export default function Login() {
           </form>
         </div>
       </div>
-      <div className="imageContainer  md:w-[50%] md:block hidden">
+      <div className="imageContainer md:w-[50%] md:block hidden">
         <div className="imagebox w-full h-[100vh] bg-pink-500 rounded-tl-[40px] rounded-bl-[40px] rounded-tr-[0px] rounded-br-[0px]">
           <img
             className="relative w-full h-full top-0 left-0 rounded-tl-[40px] rounded-bl-[40px] rounded-tr-[0px] rounded-br-[0px] object-cover"
             src="https://images.pexels.com/photos/7887815/pexels-photo-7887815.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="form-image"
+            alt="A person working on a laptop"
           />
         </div>
       </div>
+      <ToastContainer position="top-center" />
     </div>
   )
 }

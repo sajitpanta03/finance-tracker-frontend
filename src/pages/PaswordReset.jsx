@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import InputComponent from '@/components/InputComponent'
 import useApi from '@/hooks/useApi'
 import { useState } from 'react'

@@ -10,12 +10,21 @@ const useApi = (baseURL) => {
       setLoading(true)
       setError(null)
 
+      const token = localStorage.getItem('authToken')
+
+      const authHeaders = token
+        ? {
+            Authorization: `Bearer ${token}`,
+            ...headers,
+          }
+        : { ...headers }
+
       try {
         const response = await fetch(`${baseURL}${endpoint}`, {
           method,
           headers: {
             'Content-Type': 'application/json',
-            ...headers,
+            ...authHeaders,
           },
           body: body ? JSON.stringify(body) : null,
         })
