@@ -1,16 +1,52 @@
-import { createBrowserRouter } from "react-router-dom";
-import About from "../components/About";
-import Home from "../components/Home";
+import { createBrowserRouter } from 'react-router-dom'
+import App from '@/App'
+import Registration from '@/pages/Registration'
+import PasswordReset from '@/pages/PaswordReset'
+import Login from '@/pages/Login'
+import ForgotPassword from '@/pages/ForgotPassword'
+import UserDashboard from '@/pages/UserDashboard'
+import ProtectedRoute from '@/hooks/ProtectedRoute.js'
+import ViewIncomePage from '@/pages/incomes/ViewIncomePage.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        path: '',
+        element: <Registration />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: 'password-reset',
+        element: <PasswordReset />,
+      },
+      {
+        path: 'user-dashboard',
+        element: (
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'view-income',
+        element: (
+          <ProtectedRoute>
+            <ViewIncomePage />
+          </ProtectedRoute>
+        ),
+      },
+    ],
   },
-  {
-    path: "/about",
-    element: <About />,
-  },
-]);
+])
 
-export default router;
+export default router
