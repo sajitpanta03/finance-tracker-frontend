@@ -5,6 +5,14 @@ export default function UserDashboard() {
 
   const sidebarItems = [
     {
+      id: 'Home',
+      icon: '🏠',
+      label: 'Home',
+      subItems: [
+        { label: 'Home', link: '/user-dashboard' },
+      ],
+    },
+    {
       id: 'income',
       icon: '💰',
       label: 'Income',
@@ -28,7 +36,7 @@ export default function UserDashboard() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <div className="w-16 bg-white shadow-lg">
+      <div className="w-16 dark:bg-gray-800 bg-white shadow-lg">
         <div className="flex flex-col items-center mt-4">
           {sidebarItems.map((item) => (
             <div
@@ -41,14 +49,14 @@ export default function UserDashboard() {
               {hoveredItem === item.id && (
                 <div
                   onMouseLeave={() => setHoveredItem(null)}
-                  className="absolute left-16 top-0 ml-2 w-48 bg-white shadow-lg rounded-lg p-2"
+                  className="dark:bg-gray-700 absolute left-16 top-0 ml-2 w-48 bg-white shadow-lg rounded-lg p-2"
                 >
-                  <h3 className="font-semibold text-gray-800">{item.label}</h3>
+                  <h3 className="dark:text-white font-semibold text-gray-800">{item.label}</h3>
                   <ul className="mt-2">
                     {item.subItems.map((subItem, index) => (
                       <li
                         key={index}
-                        className="py-1 text-gray-700 hover:bg-gray-100 px-2 rounded"
+                        className="dark:text-white dark:hover:bg-gray-800 py-1 text-gray-700 hover:bg-gray-100 px-2 rounded"
                       >
                         <a href={subItem.link} className="block w-full h-full">
                           {subItem.label}

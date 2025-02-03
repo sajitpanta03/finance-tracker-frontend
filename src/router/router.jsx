@@ -6,7 +6,7 @@ import Login from '@/pages/Login'
 import ForgotPassword from '@/pages/ForgotPassword'
 import UserDashboard from '@/pages/UserDashboard'
 import ProtectedRoute from '@/hooks/ProtectedRoute.js'
-import ViewIncomePage from '@/pages/incomes/ViewIncomePage.jsx'
+import IncomePage from '@/pages/incomes/IncomePage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         path: 'view-income',
         element: (
           <ProtectedRoute>
-            <ViewIncomePage />
+            <IncomePage />
           </ProtectedRoute>
         ),
       },

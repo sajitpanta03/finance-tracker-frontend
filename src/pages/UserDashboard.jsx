@@ -2,7 +2,7 @@ import UserSidebarComponent from '../components/UserSidebarComponent.jsx'
 
 export default function UserDashboard() {
   return (
-    <div className="flex min-h-screen">
+    <div className="dark:bg-gray-800 flex min-h-screen">
       <UserSidebarComponent />
 
       <div className="flex-1 p-8 bg-gray-100">
